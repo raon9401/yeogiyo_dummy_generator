@@ -77,7 +77,7 @@ function App() {
   "stationId" : ${idNum},
   "categoryId" : ${(Math.ceil(Math.random() * 10) % kateArr.length) + 1},
   "address" : "우리",
-  "tags" : [${selectTag(Math.ceil(Math.random() * 10) % kateArr.length)},24,${
+  "tags" : [${selectTag(Math.ceil(Math.random() * 10) % kateArr.length)},26,${
             moodTag[Math.ceil(Math.random() * 10) % moodTag.length]
           }]
   }
