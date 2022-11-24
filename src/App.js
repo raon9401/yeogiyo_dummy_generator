@@ -47,14 +47,9 @@ const selectTag = (kategori) => {
 
 function App() {
   const [position, setPosition] = useState();
-  const [center, setCenter] = useState({
-    // 지도의 중심좌표
-    lat: 36.70546977668663,
-    lng: 127.99721206396924,
-  });
-  const [level, setLevel] = useState(14);
-  const [clip, setClip] = useState("");
-
+  const [center, setCenter] = useState(StationInfo[0].position);
+  const [clip, setClip] = useState("초기값");
+  const [idNum, setIdNum] = useState(1);
   const handlePosition = (position) => {
     setPosition({
       lat: position.La,
@@ -69,9 +64,9 @@ function App() {
     });
   };
   useEffect(() => {
-    position &&
-      setClip(
-        `
+    position
+      ? setClip(
+          `
       {    "title" : "${
         titleArr[Math.ceil(Math.random() * 10) % titleArr.length]
       }",
@@ -79,15 +74,16 @@ function App() {
   "star" : ${(Math.ceil(Math.random() * 10) % 5) + 1},
   "latitude" : ${position.lat},
   "longitude" : ${position.lng},
-  "stationId" : 14,
-  "categoryId" : ${Math.ceil(Math.random() * 10) % kateArr.length},
+  "stationId" : ${idNum},
+  "categoryId" : ${(Math.ceil(Math.random() * 10) % kateArr.length) + 1},
   "address" : "우리",
   "tags" : [${selectTag(Math.ceil(Math.random() * 10) % kateArr.length)},24,${
-          moodTag[Math.ceil(Math.random() * 10) % moodTag.length]
-        }]
+            moodTag[Math.ceil(Math.random() * 10) % moodTag.length]
+          }]
   }
       `
-      );
+        )
+      : setClip("");
   }, [position]);
 
   return (
@@ -97,10 +93,10 @@ function App() {
           {StationInfo.map((el, index) => (
             <button
               key={index}
-              className="border-2 w-fit"
+              className="border-2 w-auto "
               onClick={() => {
                 setCenter(el.position);
-                setLevel(4);
+                setIdNum(index + 1);
               }}
             >
               {el.train}
@@ -116,7 +112,7 @@ function App() {
               width: "450px",
               height: "500px",
             }}
-            level={level} // 지도의 확대 레벨
+            level={5} // 지도의 확대 레벨
             onClick={(_t, mouseEvent) => {
               onMarker(mouseEvent);
             }}
